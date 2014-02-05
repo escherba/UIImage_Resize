@@ -6,7 +6,7 @@
 #import "UIImage+Resize.h"
 
 // Private helper methods
-@interface UIImage ()
+@interface UIImage (Resize_Private)
 - (UIImage *)resizedImage:(CGSize)newSize
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
@@ -100,8 +100,12 @@
     return [self resizedImage:newSize interpolationQuality:quality];
 }
 
+@end
+
 #pragma mark -
 #pragma mark Private helper methods
+
+@implementation UIImage (Resize_Private)
 
 // Returns a copy of the image that has been transformed using the given affine transform and scaled to the new size
 // The new image's orientation will be UIImageOrientationUp, regardless of the current image's orientation
