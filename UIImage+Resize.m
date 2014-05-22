@@ -81,22 +81,30 @@
     CGFloat horizontalRatio = bounds.width / self.size.width;
     CGFloat verticalRatio = bounds.height / self.size.height;
     CGFloat ratio;
+    CGSize newSize;
     
     switch (contentMode) {
         case UIViewContentModeScaleAspectFill:
+            // clip image if necessary
             ratio = MAX(horizontalRatio, verticalRatio);
+            newSize = CGSizeMake(self.size.width * ratio, self.size.height * ratio);
             break;
             
         case UIViewContentModeScaleAspectFit:
+            // leave transparent areas if necessary
             ratio = MIN(horizontalRatio, verticalRatio);
+            newSize = CGSizeMake(self.size.width * ratio, self.size.height * ratio);
             break;
-            
+        
+        case UIViewContentModeScaleToFill:
+            // do not preserve aspect ratio
+            newSize = bounds;
+            break;
+
         default:
             [NSException raise:NSInvalidArgumentException 
                         format:@"Unsupported content mode: %lu", (unsigned long)contentMode];
     }
-    
-    CGSize newSize = CGSizeMake(self.size.width * ratio, self.size.height * ratio);
     
     return [self resizedImage:newSize interpolationQuality:quality];
 }
